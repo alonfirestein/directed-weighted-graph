@@ -73,7 +73,3 @@ class GraphAlgo(GraphAlgoInterface):
         """
         raise NotImplementedError
 
-
-def getJSONedges(neighbours):
-    return {int(node): {int(edge): weight for edge, weight in edge_data.items()}
-            for node, edge_data in neighbours.items()}
