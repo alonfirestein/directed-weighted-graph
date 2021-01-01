@@ -24,27 +24,6 @@ class Node:
         self.tag = 0
         self.loc = loc
 
-    def get_id(self):
-        return self.id
-
-    def set_loc(self, loc):
-        self.loc = loc
-
-    def get_loc(self):
-        return self.loc
-
-    def set_tag(self, tag):
-        self.tag = tag
-
-    def get_tag(self):
-        return self.tag
-
-    def set_info(self, info):
-        self.info = info
-
-    def get_info(self):
-        return self.info
-
     def __str__(self):
         return "ID: "+str(self.id)+" Location: "+str(self.loc)
 
@@ -55,15 +34,6 @@ class Edge:
         self.src = src
         self.dest = dest
         self.weight = weight
-
-    def get_src(self):
-        return self.src
-
-    def get_dest(self):
-        return self.dest
-
-    def get_weight(self):
-        return self.weight
 
     def __str__(self):
         return "(src:" + str(self.src) + ", dest:" + str(self.dest) + ", weight:" + str(self.weight) + ")"
@@ -122,23 +92,17 @@ class DiGraph(GraphInteface):
         if node_id not in self.NodesInGraph:
             return False
 
-        # TO DELETE: MADE IT SHORTER FOR HANANEL
-        # if (node_id not in self.NodesWithOutputEdges) and (node_id not in self.NodesWithReceivingEdges):
-        #     self.NodesInGraph.pop(node_id)
-        #     self.MC += 1
-        #     return True
+        for key in self.NodesWithOutputEdges[node_id]:
+            del self.NodesWithReceivingEdges[key][node_id]
+            self.MC += 1
+            self.EdgeCounter -= 1
+        del self.NodesWithReceivingEdges[node_id]
 
         numOfNeighbours = len(self.NodesWithOutputEdges[node_id])
         del self.NodesWithOutputEdges[node_id]
         self.MC += numOfNeighbours
         self.EdgeCounter -= numOfNeighbours
 
-        for key in self.NodesWithReceivingEdges[node_id]:
-            del self.NodesWithOutputEdges[key][node_id]
-            self.MC += 1
-            self.EdgeCounter -= 1
-
-        del self.NodesWithReceivingEdges[node_id]
         self.NodesInGraph.pop(node_id)
         self.MC += 1
         return True
@@ -158,4 +122,3 @@ class DiGraph(GraphInteface):
         for node in self.NodesInGraph.keys():
             result += "Node: %s, Neighbours: %s \n" %(node, str(self.NodesWithOutputEdges[node]))
         return result
-

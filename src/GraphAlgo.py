@@ -1,13 +1,15 @@
 from src import GraphInterface
-from src import GraphAlgoInterface
-from src import DiGraph
+from src.GraphAlgoInterface import GraphAlgoInterface
+from src.DiGraph import DiGraph
+from queue import PriorityQueue
 import json
+import math
 import matplotlib.pyplot as plt
 
 
 class GraphAlgo(GraphAlgoInterface):
 
-    def __init__(self, graph):
+    def __init__(self, graph=DiGraph()):
         self.graph = graph
 
     def get_graph(self) -> GraphInterface:
@@ -25,51 +27,51 @@ class GraphAlgo(GraphAlgoInterface):
             return True
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        """
-        Returns the shortest path from node id1 to node id2 using Dijkstra's Algorithm
-        @param id1: The start node id
-        @param id2: The end node id
-        @return: The distance of the path, the path as a list
-
-        Example:
-#      >>> from GraphAlgo import GraphAlgo
-#       >>> g_algo = GraphAlgo()
-#        >>> g_algo.addNode(0)
-#        >>> g_algo.addNode(1)
-#        >>> g_algo.addNode(2)
-#        >>> g_algo.addEdge(0,1,1)
-#        >>> g_algo.addEdge(1,2,4)
-#        >>> g_algo.shortestPath(0,1)
-#        (1, [0, 1])
-#        >>> g_algo.shortestPath(0,2)
-#        (5, [0, 1, 2])
-
-        More info:
-        https://en.wikipedia.org/wiki/Dijkstra's_algorithm
-        """
-        raise NotImplementedError
+        pass
 
     def connected_component(self, id1: int) -> list:
-        """
-        Finds the Strongly Connected Component(SCC) that node id1 is a part of.
-        @param id1: The node id
-        @return: The list of nodes in the SCC
-        """
-        raise NotImplementedError
+        pass
 
     def connected_components(self) -> list[list]:
-        """
-        Finds all the Strongly Connected Component(SCC) in the graph.
-        @return: The list all SCC
-        """
-        raise NotImplementedError
+        pass
 
     def plot_graph(self) -> None:
-        """
-        Plots the graph.
-        If the nodes have a position, the nodes will be placed there.
-        Otherwise, they will be placed in a random but elegant manner.
-        @return: None
-        """
-        raise NotImplementedError
+        pass
+
+    def dijsktra(self, graph, start, end):
+        # shortest paths is a dict of nodes
+        # whose value is a tuple of (previous node, weight)
+        shortest_paths = {start: (None, 0)}
+        current_node = start
+        visited = set()
+
+        while current_node != end:
+            visited.add(current_node)
+            destinations = graph.edges[current_node]
+            weight_to_current_node = shortest_paths[current_node][1]
+
+            for next_node in destinations:
+                weight = graph.weights[(current_node, next_node)] + weight_to_current_node
+                if next_node not in shortest_paths:
+                    shortest_paths[next_node] = (current_node, weight)
+                else:
+                    current_shortest_weight = shortest_paths[next_node][1]
+                    if current_shortest_weight > weight:
+                        shortest_paths[next_node] = (current_node, weight)
+
+            next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
+            if not next_destinations:
+                return "Route Not Possible"
+            # next node is the destination with the lowest weight
+            current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
+
+        # Work back through destinations in shortest path
+        path = []
+        while current_node is not None:
+            path.append(current_node)
+            next_node = shortest_paths[current_node][0]
+            current_node = next_node
+        # Reverse path
+        path = path[::-1]
+        return path
 

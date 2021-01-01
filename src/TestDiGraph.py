@@ -29,17 +29,17 @@ class MyTestCase(unittest.TestCase):
             graph.remove_edge(node,node+1)
         self.assertEqual(graph.e_size(), 14)
         graph.remove_node(15)
-        self.assertEqual(graph.e_size(), 13)
+        self.assertEqual(graph.e_size(), 12)
 
     def test_mc(self):
         graph = create_graph()
         self.assertEqual(graph.get_mc(), 39)
         for node in range(5):
             graph.remove_edge(node,node+1)
-        self.assertEqual(graph.e_size(), 44)
+        self.assertEqual(graph.get_mc(), 44)
         graph.remove_node(15)
         graph.remove_node(18)
-        self.assertEqual(graph.e_size(), 50)
+        self.assertEqual(graph.get_mc(), 50)
 
 
 

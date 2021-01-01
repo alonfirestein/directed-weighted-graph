@@ -83,5 +83,30 @@ def check0():
 #     print(g_algo.connected_components())
 #     g_algo.plot_graph()
 
+def create_graph():
+    default_weight = 10
+    graph = DiGraph()
+    for node in range(20):
+        graph.add_node(node)
+    for node in range(19):
+        graph.add_edge(node,node+1,default_weight)
+    return graph
+
 if __name__ == '__main__':
-    check()
+
+    graph = create_graph()
+    print(graph.v_size())
+    print(graph.get_mc())
+    print(graph.e_size())
+    for node in range(5):
+        print("E: ",graph.e_size())
+        graph.remove_edge(node,node+1)
+    graph.remove_node(15)
+    print("E: ", graph.e_size())
+    graph.remove_node(18)
+    print("E: ", graph.e_size())
+    print(graph.v_size())
+    print(graph.e_size())
+    print(graph.get_mc())
+
+    #check()
