@@ -1,3 +1,5 @@
+from typing import List
+
 from src import GraphInterface
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.DiGraph import DiGraph
@@ -5,6 +7,7 @@ from queue import PriorityQueue
 import json
 import math
 import matplotlib.pyplot as plt
+INFINITY = math.inf
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -15,63 +18,110 @@ class GraphAlgo(GraphAlgoInterface):
     def get_graph(self) -> GraphInterface:
         return self.graph
 
-    def load_from_json(self, file_name: str) -> bool:
-        pass
+    def load_from_json(self, file_name):
 
-    def save_to_json(self, file_name):
-        if file_name == None:
+        self.graph = DiGraph()
+        try:
+            with open(file_name) as file:
+                JSONgraph = json.load(file)
+                for node in JSONgraph["Nodes"]:
+                    if "pos" in node:
+                        pos = tuple(map(float, str(node["pos"]).split(",")))
+                        self.graph.add_node(node["id"], pos)
+                    else:
+                        self.graph.add_node(node["id"])
+
+                for edge in JSONgraph["Edges"]:
+                    src = edge["src"]
+                    weight = edge["w"]
+                    dest = edge["dest"]
+                    self.graph.add_edge(src, dest, weight)
+
+        except Exception as e:
+            print(e)
             return False
 
-        with open(file_name, "w") as file:
-            json.dump(self.graph.__dict__, file)
-            return True
+        return True
+
+    def save_to_json(self, file_name):
+
+        if file_name is None:
+            return False
+
+        JSONgraph = dict()
+        JSONgraph["Edges"] = list()
+        JSONgraph["Nodes"] = list()
+        try:
+            with open(file_name, "w") as file:
+                graph_nodes = self.graph.get_all_v()
+                for node_key, pos in graph_nodes.items():
+                    JSONgraph["Nodes"].append({"pos": pos, "id": node_key})
+                    for neighbour_key, weight in  self.graph.all_out_edges_of_node(node_key).items():
+                        JSONgraph["Edges"].append({"src": node_key, "w": weight, "dest": neighbour_key})
+
+                json.dump(JSONgraph, file, default=lambda x: x.__dict__)
+                return True
+
+        except IOError:
+            return False
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-        pass
+
+        if id1 == id2:
+            return 0, []
+
+        parentsList = dict()
+        distanceList = dict()
+        visitedNodes = set()
+        graph_nodes = self.graph.get_all_v()
+
+        if (id1 not in graph_nodes) or (id1 not in graph_nodes):
+            return None
+
+        queue = PriorityQueue()
+        queue.put(graph_nodes[id1].id)
+        for node in graph_nodes.keys():
+            distanceList[node] = INFINITY
+
+        parentsList[id1] = id1
+        distanceList[id1] = 0
+
+        while not queue.empty():
+            currentNode = queue.get()
+            if currentNode == id2:
+                break
+            visitedNodes.add(currentNode)
+
+            for key, weight in self.graph.all_out_edges_of_node(currentNode).items():
+                nextNode = graph_nodes[key].id
+                tempWeight = weight + distanceList[currentNode]
+                if tempWeight < distanceList[nextNode]:
+                    distanceList[nextNode] = tempWeight
+                    parentsList[nextNode] = currentNode
+                    queue.put(nextNode)
+
+        # If Path between id1 and id2 is not accessible => therefore not connected:
+        if distanceList[id2] == INFINITY:
+            return None
+
+        path = []
+        BackTrackPath = id2
+        while distanceList[BackTrackPath] != 0:
+            path.append(graph_nodes[BackTrackPath].id)
+            if parentsList[BackTrackPath] != BackTrackPath:
+                BackTrackPath = parentsList[BackTrackPath]
+        path.append(BackTrackPath)
+        path = path[::-1]
+        return distanceList[id2], path
 
     def connected_component(self, id1: int) -> list:
         pass
 
-    def connected_components(self) -> list[list]:
+    def connected_components(self) -> List[list]:
         pass
 
     def plot_graph(self) -> None:
         pass
 
-    def dijsktra(self, graph, start, end):
-        # shortest paths is a dict of nodes
-        # whose value is a tuple of (previous node, weight)
-        shortest_paths = {start: (None, 0)}
-        current_node = start
-        visited = set()
 
-        while current_node != end:
-            visited.add(current_node)
-            destinations = graph.edges[current_node]
-            weight_to_current_node = shortest_paths[current_node][1]
-
-            for next_node in destinations:
-                weight = graph.weights[(current_node, next_node)] + weight_to_current_node
-                if next_node not in shortest_paths:
-                    shortest_paths[next_node] = (current_node, weight)
-                else:
-                    current_shortest_weight = shortest_paths[next_node][1]
-                    if current_shortest_weight > weight:
-                        shortest_paths[next_node] = (current_node, weight)
-
-            next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
-            if not next_destinations:
-                return "Route Not Possible"
-            # next node is the destination with the lowest weight
-            current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
-
-        # Work back through destinations in shortest path
-        path = []
-        while current_node is not None:
-            path.append(current_node)
-            next_node = shortest_paths[current_node][0]
-            current_node = next_node
-        # Reverse path
-        path = path[::-1]
-        return path
 
