@@ -18,15 +18,16 @@ class GeoLocation:
 
 class Node:
 
-    def __init__(self, node_id, loc=None):
+    def __init__(self, node_id, pos=None):
         self.id = node_id
         self.info = ""
         self.tag = 0
-        self.loc = loc
+        self.pos = pos
 
-    def __str__(self):
+    def __repr__(self):
         return "{}".format(self.id)
 
+#
 class Edge:
 
     def __init__(self, src, dest, weight):
@@ -64,6 +65,9 @@ class DiGraph(GraphInteface):
 
     def get_mc(self):
         return self.MC
+
+    def getNode(self, id):
+        return self.NodesInGraph[id]
 
     def add_edge(self, id1, id2, weight):
         if (id1 not in self.NodesInGraph.keys()) or (id2 not in self.NodesInGraph.keys()):
