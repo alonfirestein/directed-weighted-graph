@@ -190,9 +190,7 @@ class GraphAlgo(GraphAlgoInterface):
             for j in self.graph.all_out_edges_of_node(i):
                 xy1 = (self.graph.getNode(i).pos[0], self.graph.getNode(i).pos[1])
                 xy2 = (self.graph.getNode(j).pos[0], self.graph.getNode(j).pos[1])
-                con = ConnectionPatch(xy1, xy2, coordsA, coordsB,
-                                      arrowstyle="->", shrinkA=5, shrinkB=5, fc="w")
-                #ax.plot([xy1[0], xy2[0]], [xy1[1], xy2[1]], "o")
+                con = ConnectionPatch(xy1, xy2, coordsA, coordsB, arrowstyle="->", shrinkA=5, shrinkB=5, fc="w")
                 ax.add_artist(con)
                 ax.plot(x, y, "o")
         plt.title("Graph Representation:")
@@ -208,12 +206,12 @@ class GraphAlgo(GraphAlgoInterface):
         Getting the limits of the X/Y axis using the position of all the nodes in graph.
         :return: the maximum and minimum X/Y values from all the node positions in the graph.
         """
-        x = random.uniform(35.1800000000, 35.2500000000)
-        y = random.uniform(32.1000000000, 32.1100000000)
         x_positions, y_positions = list(), list()
         for node in self.graph.get_all_v().values():
             if node.pos is None:
-                node.pos = (x,y,0)
+                x = random.uniform(35.1800000000, 35.2500000000)
+                y = random.uniform(32.1000000000, 32.1100000000)
+                node.pos = (x, y, 0)
             x_positions.append(node.pos[0])
             y_positions.append(node.pos[1])
         return max(x_positions), min(x_positions), max(y_positions), min(y_positions)
@@ -242,4 +240,5 @@ class GraphAlgo(GraphAlgoInterface):
         x = random.uniform(x_min, x_max)
         y = random.uniform(y_min, y_max)
         z = 0
-        return x, y, z
+        result = (x, y, z)
+        return result
