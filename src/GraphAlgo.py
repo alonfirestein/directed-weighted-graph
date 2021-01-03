@@ -14,7 +14,9 @@ INFINITY = math.inf
 
 
 class GraphAlgo(GraphAlgoInterface):
-
+    """
+    This class was created in order to implement a number of different algorithms in a directed weighted graph.
+    """
     def __init__(self, graph=DiGraph()):
         self.graph = graph
 
@@ -22,7 +24,11 @@ class GraphAlgo(GraphAlgoInterface):
         return self.graph
 
     def load_from_json(self, file_name: str) -> bool:
-
+        """
+        Loading a graph that was saved as in a JSON file format.
+        :param file_name: the name of the file that we want to load
+        :return: (True/False) if the graph was successfully loaded from the file or not.
+        """
         self.graph = DiGraph()
         try:
             with open(file_name) as file:
@@ -47,7 +53,11 @@ class GraphAlgo(GraphAlgoInterface):
         return True
 
     def save_to_json(self, file_name: str) -> bool:
-
+        """
+        Saving a graph in a JSON file format.
+        :param file_name: the name of the file that we want to save it as.
+        :return: (True/False) if the graph was successfully saved in the file or not.
+        """
         if file_name is None:
             return False
 
@@ -69,7 +79,14 @@ class GraphAlgo(GraphAlgoInterface):
             return False
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
-
+        """
+        Using dijkstra's algorithm, this function calculates the shortest path between two nodes in a directed weighted
+        graph, a
+        :param id1: the source node of the path
+        :param id2: the destination node of the path
+        :return: a tuple containing the sum weight of the path,
+        and a list of all the nodes that were visited during the traversal between the two nodes.
+        """
         if id1 == id2:
             return 0, []
 
@@ -79,7 +96,7 @@ class GraphAlgo(GraphAlgoInterface):
         graph_nodes = self.graph.get_all_v()
 
         if (id1 not in graph_nodes) or (id1 not in graph_nodes):
-            return None
+            return INFINITY, None
 
         queue = PriorityQueue()
         queue.put(graph_nodes[id1].id)
@@ -105,7 +122,7 @@ class GraphAlgo(GraphAlgoInterface):
 
         # If Path between id1 and id2 is not accessible => therefore not connected:
         if distanceList[id2] == INFINITY:
-            return None
+            return INFINITY, None
 
         path = []
         BackTrackPath = id2
@@ -158,6 +175,11 @@ class GraphAlgo(GraphAlgoInterface):
         return ans
 
     def plot_graph(self) -> None:
+        """
+        Using the matplotlib library, this function plots a directed weighted graph in order to properly
+        visualize a representation of the graph.
+        :return: None - just opens up the pop up window containing the graph visualization.
+        """
         x = self.get_all_node_pos()[0]
         y = self.get_all_node_pos()[1]
         fig, ax = plt.subplots(1, 1, figsize=(8, 7))
@@ -182,22 +204,39 @@ class GraphAlgo(GraphAlgoInterface):
         plt.show()
 
     def get_node_pos_limits(self):
-
+        """
+        Getting the limits of the X/Y axis using the position of all the nodes in graph.
+        :return: the maximum and minimum X/Y values from all the node positions in the graph.
+        """
+        x = random.uniform(35.1800000000, 35.2500000000)
+        y = random.uniform(32.1000000000, 32.1100000000)
         x_positions, y_positions = list(), list()
         for node in self.graph.get_all_v().values():
+            if node.pos is None:
+                node.pos = (x,y,0)
             x_positions.append(node.pos[0])
             y_positions.append(node.pos[1])
         return max(x_positions), min(x_positions), max(y_positions), min(y_positions)
 
     def get_all_node_pos(self):
-
+        """
+        Getting the positions of all the nodes in the graph.
+        :return: two lists, containing the X positions of all the nodes, and the Y positions of all the nodes.
+        """
         x_positions, y_positions = list(), list()
         for node in self.graph.get_all_v().values():
+            if node.pos is None:
+                node.pos = self.generate_random_pos()
             x_positions.append(node.pos[0])
             y_positions.append(node.pos[1])
         return x_positions, y_positions
 
     def generate_random_pos(self):
+        """
+        In case a node does not have a position/geolocation, therefore this function will generate a random position
+        for him using the random library, and the minimum/maximum limits from the rest of the nodes in the graph.
+        :return: a random position in the graph
+        """
         x_max, x_min, y_max, y_min = self.get_node_pos_limits()[0], self.get_node_pos_limits()[1],\
                                      self.get_node_pos_limits()[2], self.get_node_pos_limits()[3]
         x = random.uniform(x_min, x_max)

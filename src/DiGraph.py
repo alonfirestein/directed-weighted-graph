@@ -3,20 +3,30 @@ import math
 
 
 class GeoLocation:
+    """
+    This class was created in order to implement the location of each node with x,y,z coordinates.
+    """
 
     def __init__(self, x, y, z):
         self.x = x
         self.y = y
         self.z = z
 
-    # Distance from another node location
     def distance(self, other):
+        """
+        Calculating the distance between two node locations
+        :param other: the second node
+        :return:
+        """
         return math.sqrt((other.x - self.x) ** 2 +
                          (other.y - self.y) ** 2 +
                          (other.z - self.z) ** 2)
 
 
 class Node:
+    """
+    This class was created in order to implement a node in a directed weighted graph.
+    """
 
     def __init__(self, node_id, pos=None):
         self.id = node_id
@@ -27,8 +37,11 @@ class Node:
     def __repr__(self):
         return "{}".format(self.id)
 
-#
+
 class Edge:
+    """
+    This class was created in order to implement an edge in a directed weighted graph.
+    """
 
     def __init__(self, src, dest, weight):
         self.src = src
@@ -40,6 +53,10 @@ class Edge:
 
 
 class DiGraph(GraphInteface):
+    """
+    Using the previous classes, the DiGraph class is built to implement a directed weighted graph, mostly using dictionaries
+    to store the values of different types of data needed in order to properly build the graph.
+    """
 
     def __init__(self):
         self.NodesInGraph = {}
@@ -58,9 +75,19 @@ class DiGraph(GraphInteface):
         return self.NodesInGraph
 
     def all_in_edges_of_node(self, id1):
+        """
+        Returning a list of all the nodes that are connected id1, and their edges are directed towards the node with id1.
+        :param id1: the id of the node.
+        :return: list of id1's neighbours that have an edge directed towards id1.
+        """
         return self.NodesWithReceivingEdges[id1]
 
     def all_out_edges_of_node(self, id1):
+        """
+        Returning a list of all the nodes that are connected id1, and their edges are directed away from the node with id1.
+        :param id1: the id of the node.
+        :return: list of id1's neighbours that have an edge directed away from id1.
+        """
         return self.NodesWithOutputEdges[id1]
 
     def get_mc(self):
@@ -70,6 +97,13 @@ class DiGraph(GraphInteface):
         return self.NodesInGraph[id]
 
     def add_edge(self, id1, id2, weight):
+        """
+        Connecting an edge between two nodes in a directed weighted graph.
+        :param id1: the source node of the edge
+        :param id2: the destination node of the edge
+        :param weight: the weigh of the edge
+        :return: (True/False) if the edge was successfully connected or not
+        """
         if (id1 not in self.NodesInGraph.keys()) or (id2 not in self.NodesInGraph.keys()):
             return False
         # If edge exists then we do nothing
@@ -82,6 +116,12 @@ class DiGraph(GraphInteface):
         return True
 
     def add_node(self, node_id, pos: tuple = None):
+        """
+        Creating a new node and adding it to the graph.
+        :param node_id: the id number of the new node to create
+        :param pos: the position of the node in graph
+        :return: (True/False) if the node was successfully added to the graph or not.
+        """
         if node_id in self.NodesInGraph:
             return False
         node = Node(node_id, pos)
@@ -92,6 +132,11 @@ class DiGraph(GraphInteface):
         return True
 
     def remove_node(self, node_id):
+        """
+        Removing a node from the graph, therefore needing to remove all the edges connected to him (if such exist).
+        :param node_id: the id of the node to remove from the graph.
+        :return: (True/False) if the node was successfully removed or not.
+        """
         if node_id not in self.NodesInGraph:
             return False
 
@@ -111,6 +156,12 @@ class DiGraph(GraphInteface):
         return True
 
     def remove_edge(self, node_id1, node_id2):
+        """
+        Removing an edge between two nodes from the graph (if such exist).
+        :param node_id1: the source node of the edge
+        :param node_id2: the destination node of the edge
+        :return: (True/False) if the edge was successfully removed or not.
+        """
         if node_id1 not in self.NodesWithOutputEdges:
             return False
         elif node_id2 not in self.NodesWithOutputEdges[node_id1]:
