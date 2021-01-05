@@ -137,7 +137,8 @@ class GraphAlgo(GraphAlgoInterface):
     def connected_component(self, id1: int) -> list:
         if id1 not in self.get_graph().NodesInGraph:
             return None  # asq Boaz
-
+        for initialize in self.get_graph().NodesInGraph.values():
+            initialize.tag = 0
         node = self.get_graph().getNode(id1)
         MyList = list()
         node.tag = 1
@@ -157,15 +158,17 @@ class GraphAlgo(GraphAlgoInterface):
             tempNode = MyList.pop()
             for Ni in self.get_graph().NodesWithReceivingEdges[tempNode.id].keys():
                 reversNi = self.get_graph().getNode(Ni)
-                if reversNi.tag == 1:
+                if (reversNi.tag == 1):
                     reversNi.tag = 2
+                    reversNi.info = "checked"
                     ans.append(reversNi)
+                    MyList.append(reversNi)
         return ans
 
     def connected_components(self) -> List[list]:
         ans = []
         for node in self.get_graph().NodesInGraph.values():
-            if node.tag == 2:
+            if "checked" in node.info:
                 continue
             else:
                 ans.append(self.connected_component(node.id))
@@ -184,14 +187,17 @@ class GraphAlgo(GraphAlgoInterface):
         y = self.get_all_node_pos()[1]
         fig, ax = plt.subplots(1, 1, figsize=(8, 7))
         coordsA, coordsB = "data", "data"
-        for i in range(self.graph.v_size()):
-            if self.graph.getNode(i).pos is None:
-                self.graph.getNode(i).pos = self.generate_random_pos()
-            for j in self.graph.all_out_edges_of_node(i):
-                xy1 = (self.graph.getNode(i).pos[0], self.graph.getNode(i).pos[1])
-                xy2 = (self.graph.getNode(j).pos[0], self.graph.getNode(j).pos[1])
-                con = ConnectionPatch(xy1, xy2, coordsA, coordsB, arrowstyle="->", shrinkA=5, shrinkB=5, fc="w")
-                ax.add_artist(con)
+        for src_node in self.graph.get_all_v().values():
+            if src_node.pos is None:
+                src_node.pos = self.generate_random_pos()
+            for j in self.graph.all_out_edges_of_node(src_node.id):
+                dest_node = self.graph.getNode(j)
+                if dest_node.pos is None:
+                    dest_node.pos = self.generate_random_pos()
+                xy1 = (src_node.pos[0], src_node.pos[1])
+                xy2 = (dest_node.pos[0], dest_node.pos[1])
+                ConPatch = ConnectionPatch(xy1, xy2, coordsA, coordsB, arrowstyle="->", shrinkA=5, shrinkB=5, fc="w")
+                ax.add_artist(ConPatch)
                 ax.plot(x, y, "o")
         plt.title("Graph Representation:")
         plt.xlabel("X position of node")
