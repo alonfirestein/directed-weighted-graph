@@ -120,7 +120,7 @@ class GraphAlgo(GraphAlgoInterface):
                     parentsList[nextNode] = currentNode
                     queue.put(nextNode)
 
-        # If Path between id1 and id2 is not accessible => therefore not connected:
+        # If traversal between id1 and id2 is not possible => therefore not connected:
         if distanceList[id2] == INFINITY:
             return INFINITY, []
 
@@ -137,7 +137,7 @@ class GraphAlgo(GraphAlgoInterface):
     def connected_component(self, id1: int) -> list:
 
         if id1 not in self.get_graph().NodesInGraph:
-            return None  # asq Boaz
+            return []
         if len(self.get_graph().NodesWithOutputEdges[id1]) == 0 or len(
                 self.get_graph().NodesWithReceivingEdges[id1]) == 0:
             ans = [id1]
@@ -189,7 +189,6 @@ class GraphAlgo(GraphAlgoInterface):
             for checked in l:
                 (self.get_graph().getNode(checked)).info = ""
         return sorted(ans)
-
 
     def plot_graph(self, ax=None) -> None:
         """
