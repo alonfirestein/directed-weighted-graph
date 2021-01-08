@@ -18,16 +18,19 @@ class GraphInteface:
     def get_all_v(self) -> dict:
         """return a dictionary of all the nodes in the Graph, each node is represented using apair  (key, node_data)
         """
+        raise NotImplementedError
 
     def all_in_edges_of_node(self, id1: int) -> dict:
         """return a dictionary of all the nodes connected to (into) node_id ,
         each node is represented using a pair (key, weight)
          """
+        raise NotImplementedError
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         """return a dictionary of all the nodes connected from node_id , each node is represented using a pair (key,
         weight)
         """
+        raise NotImplementedError
 
     def get_mc(self) -> int:
         """
