@@ -170,7 +170,7 @@ class GraphAlgo(GraphAlgoInterface):
                     ans.append(reversNi.id)
                     MyList.append(reversNi)
 
-        return ans
+        return sorted(ans)
 
     def connected_components(self) -> List[list]:
         for node in self.get_graph().NodesInGraph.values():
@@ -188,7 +188,7 @@ class GraphAlgo(GraphAlgoInterface):
         for l in ans:
             for checked in l:
                 (self.get_graph().getNode(checked)).info = ""
-        return ans
+        return sorted(ans)
 
 
     def plot_graph(self, ax=None) -> None:
