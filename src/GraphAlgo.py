@@ -38,7 +38,10 @@ class GraphAlgo(GraphAlgoInterface):
                         pos = tuple(map(float, str(node["pos"]).split(",")))
                         self.graph.add_node(node["id"], pos)
                     else:
-                        self.graph.add_node(node["id"])
+                        x = random.uniform(35.1800000000, 35.2500000000)
+                        y = random.uniform(32.1000000000, 32.1100000000)
+                        pos = (x, y, 0)
+                        self.graph.add_node(node["id"], pos)
 
                 for edge in JSONgraph["Edges"]:
                     src = edge["src"]
@@ -96,7 +99,7 @@ class GraphAlgo(GraphAlgoInterface):
         graph_nodes = self.graph.get_all_v()
 
         if (id1 not in graph_nodes) or (id1 not in graph_nodes):
-            return INFINITY, None
+            return INFINITY, []
 
         queue = PriorityQueue()
         queue.put(graph_nodes[id1].id)
@@ -105,24 +108,21 @@ class GraphAlgo(GraphAlgoInterface):
 
         parentsList[id1] = id1
         distanceList[id1] = 0
-
         while not queue.empty():
             currentNode = queue.get()
-            if currentNode == id2:
-                break
             visitedNodes.add(currentNode)
 
             for key, weight in self.graph.all_out_edges_of_node(currentNode).items():
                 nextNode = graph_nodes[key].id
-                tempWeight = weight + distanceList[currentNode]
-                if tempWeight < distanceList[nextNode]:
-                    distanceList[nextNode] = tempWeight
+                distance = weight + distanceList[currentNode]
+                if distance < distanceList[nextNode]:
+                    distanceList[nextNode] = distance
                     parentsList[nextNode] = currentNode
                     queue.put(nextNode)
 
         # If Path between id1 and id2 is not accessible => therefore not connected:
         if distanceList[id2] == INFINITY:
-            return INFINITY, None
+            return INFINITY, []
 
         path = []
         BackTrackPath = id2
@@ -135,8 +135,13 @@ class GraphAlgo(GraphAlgoInterface):
         return distanceList[id2], path
 
     def connected_component(self, id1: int) -> list:
+
         if id1 not in self.get_graph().NodesInGraph:
             return None  # asq Boaz
+        if len(self.get_graph().NodesWithOutputEdges[id1]) == 0 or len(
+                self.get_graph().NodesWithReceivingEdges[id1]) == 0:
+            ans = [id1]
+            return ans
         for initialize in self.get_graph().NodesInGraph.values():
             initialize.tag = 0
         node = self.get_graph().getNode(id1)
@@ -147,25 +152,30 @@ class GraphAlgo(GraphAlgoInterface):
             tempNode = MyList.pop()
             for ni in self.get_graph().NodesWithOutputEdges[tempNode.id].keys():
                 tempNode2 = self.get_graph().getNode(ni)
-                if tempNode2.tag == 0:
+                if tempNode2.tag == 0 and "checked" not in tempNode2.info:
                     tempNode2.tag = 1
                     MyList.append(tempNode2)
 
-        ans = [node]
+        ans = [node.id]
         node.tag = 2
         MyList.append(node)
         while len(MyList) != 0:
             tempNode = MyList.pop()
             for Ni in self.get_graph().NodesWithReceivingEdges[tempNode.id].keys():
                 reversNi = self.get_graph().getNode(Ni)
-                if (reversNi.tag == 1):
+
+                if reversNi.tag == 1 and "checked" not in reversNi.info:
                     reversNi.tag = 2
-                    reversNi.info = "checked"
-                    ans.append(reversNi)
+                    # reversNi.info = "checked"
+                    ans.append(reversNi.id)
                     MyList.append(reversNi)
+
         return ans
 
     def connected_components(self) -> List[list]:
+        for node in self.get_graph().NodesInGraph.values():
+            node.info = "un"
+
         ans = []
         for node in self.get_graph().NodesInGraph.values():
             if "checked" in node.info:
@@ -173,11 +183,15 @@ class GraphAlgo(GraphAlgoInterface):
             else:
                 ans.append(self.connected_component(node.id))
             for node1 in self.get_graph().NodesInGraph.values():
-                if node1.tag != 2:
-                    node1.tag = 0
+                if node1.tag == 2:
+                    node1.info = "checked"
+        for l in ans:
+            for checked in l:
+                (self.get_graph().getNode(checked)).info = ""
         return ans
 
-    def plot_graph(self) -> None:
+
+    def plot_graph(self, ax=None) -> None:
         """
         Using the matplotlib library, this function plots a directed weighted graph in order to properly
         visualize a representation of the graph.
