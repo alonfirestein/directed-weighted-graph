@@ -46,10 +46,6 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(graph_algo.load_from_json("../data/A404"))
         self.assertFalse(graph_algo.load_from_json("ThisDoesNotExist.json"))
 
-
-
-
-
     def test_shortest_path(self):
         graph = create_graph()
         graph_algo = GraphAlgo(graph)

@@ -70,7 +70,8 @@ class GraphAlgo(GraphAlgoInterface):
         try:
             with open(file_name, "w") as file:
                 graph_nodes = self.graph.get_all_v()
-                for node_key, pos in graph_nodes.items():
+                for node_key, node in graph_nodes.items():
+                    pos = str(node.pos[0])+', '+str(node.pos[1])+', '+str(node.pos[2])
                     JSONgraph["Nodes"].append({"pos": pos, "id": node_key})
                     for neighbour_key, weight in self.graph.all_out_edges_of_node(node_key).items():
                         JSONgraph["Edges"].append({"src": node_key, "w": weight, "dest": neighbour_key})
