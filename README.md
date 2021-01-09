@@ -22,7 +22,7 @@ Contains different directed weighted graphs in different sizes, stored in JSON f
 
 ## Example of a graph plotted using matplotlib:
 
-<img src="https://user-images.githubusercontent.com/57404551/104092797-f8ec4700-528e-11eb-9c8a-69885c8d61f0.png" width="600" height="400">
+<img src="https://user-images.githubusercontent.com/57404551/104092797-f8ec4700-528e-11eb-9c8a-69885c8d61f0.png" width="700" height="500">
 
 
 
