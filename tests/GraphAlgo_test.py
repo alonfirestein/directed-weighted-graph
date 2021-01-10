@@ -54,12 +54,12 @@ class MyTestCase(unittest.TestCase):
         graph_algo.load_from_json("../data/A3")
         graph = graph_algo.get_graph()
         self.assertEqual(graph_algo.shortest_path(1,15),
-                         (16.130060184799014, [1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]))
+                         (4.743208031114117, [1, 0, 16, 15]))
 
         graph_algo.load_from_json("../data/A5")
         graph = graph_algo.get_graph()
-        self.assertEqual(graph_algo.shortest_path(4, 9),(3.6215338308194296, [4, 3, 2, 9]))
-        self.assertEqual(graph_algo.shortest_path(2, 2),(0, []))
+        self.assertEqual(graph_algo.shortest_path(4, 9), (2.948614138644694, [4, 13, 11, 9]))
+        self.assertEqual(graph_algo.shortest_path(2, 2), (0, []))
 
 
 

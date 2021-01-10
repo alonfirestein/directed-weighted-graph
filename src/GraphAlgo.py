@@ -61,9 +61,6 @@ class GraphAlgo(GraphAlgoInterface):
         :param file_name: the name of the file that we want to save it as.
         :return: (True/False) if the graph was successfully saved in the file or not.
         """
-        if file_name is None:
-            return False
-
         JSONgraph = dict()
         JSONgraph["Edges"] = list()
         JSONgraph["Nodes"] = list()
@@ -71,7 +68,10 @@ class GraphAlgo(GraphAlgoInterface):
             with open(file_name, "w") as file:
                 graph_nodes = self.graph.get_all_v()
                 for node_key, node in graph_nodes.items():
-                    pos = str(node.pos[0])+', '+str(node.pos[1])+', '+str(node.pos[2])
+                    if node.pos is not None:
+                        pos = str(node.pos[0])+', '+str(node.pos[1])+', '+str(node.pos[2])
+                    else:
+                        pos = None
                     JSONgraph["Nodes"].append({"pos": pos, "id": node_key})
                     for neighbour_key, weight in self.graph.all_out_edges_of_node(node_key).items():
                         JSONgraph["Edges"].append({"src": node_key, "w": weight, "dest": neighbour_key})
@@ -136,6 +136,13 @@ class GraphAlgo(GraphAlgoInterface):
         return distanceList[id2], path
 
     def connected_component(self, id1: int) -> list:
+        """
+        This function finds all the strongly connected nodes to id1.
+        A node is strongly connected to id1 if it's possible to traverse between him and id1 and also the other way
+        around, given that this is a directed weighted graph.
+        :param id1: The key of the node
+        :return: A list of all the strongly connected nodes to id1
+        """
 
         if id1 not in self.get_graph().NodesInGraph:
             return []
@@ -174,6 +181,11 @@ class GraphAlgo(GraphAlgoInterface):
         return sorted(ans)
 
     def connected_components(self) -> List[list]:
+        """
+        This function finds all the possible strongly connected components in the graph.
+        A graph is said to be strongly connected if every vertex is reachable from every other vertex.
+        :return: A list with nested lists that contain all the strongly connected components in the graph.
+        """
         for node in self.get_graph().NodesInGraph.values():
             node.info = "un"
 
@@ -186,8 +198,8 @@ class GraphAlgo(GraphAlgoInterface):
             for node1 in self.get_graph().NodesInGraph.values():
                 if node1.tag == 2:
                     node1.info = "checked"
-        for l in ans:
-            for checked in l:
+        for i in ans:
+            for checked in i:
                 (self.get_graph().getNode(checked)).info = ""
         return sorted(ans)
 
@@ -216,8 +228,12 @@ class GraphAlgo(GraphAlgoInterface):
         plt.title("Graph Representation:")
         plt.xlabel("X position of node")
         plt.ylabel("Y position of node")
-        plt.xlim(self.get_node_pos_limits()[1]-0.0008, self.get_node_pos_limits()[0]+0.0008)
-        plt.ylim(self.get_node_pos_limits()[3]-0.0008, self.get_node_pos_limits()[2]+0.0008)
+        extra_space = 0.05
+        if (self.get_node_pos_limits()[0]-self.get_node_pos_limits()[1]) <= 0.5:
+            print(self.get_node_pos_limits()[0]-self.get_node_pos_limits()[1])
+            extra_space = 0.0008
+        plt.xlim(self.get_node_pos_limits()[1]-extra_space, self.get_node_pos_limits()[0]+extra_space)
+        plt.ylim(self.get_node_pos_limits()[3]-extra_space, self.get_node_pos_limits()[2]+extra_space)
         plt.tight_layout()
         plt.show()
 

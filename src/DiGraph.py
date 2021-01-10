@@ -106,6 +106,8 @@ class DiGraph(GraphInteface):
         """
         if (id1 not in self.NodesInGraph.keys()) or (id2 not in self.NodesInGraph.keys()):
             return False
+        if id1 == id2 or weight < 0:
+            return False
         # If edge exists then we do nothing
         if id2 in self.NodesWithOutputEdges[id1]:
             return False
@@ -140,18 +142,18 @@ class DiGraph(GraphInteface):
         if node_id not in self.NodesInGraph:
             return False
 
-        for key in self.NodesWithOutputEdges[node_id]:
-            del self.NodesWithReceivingEdges[key][node_id]
-            self.MC += 1
-            self.EdgeCounter -= 1
-        del self.NodesWithReceivingEdges[node_id]
-
         numOfNeighbours = len(self.NodesWithOutputEdges[node_id])
-        del self.NodesWithOutputEdges[node_id]
-        self.MC += numOfNeighbours
         self.EdgeCounter -= numOfNeighbours
+        self.MC += numOfNeighbours
+        del self.NodesWithOutputEdges[node_id]
+        del self.NodesInGraph[node_id]
 
-        self.NodesInGraph.pop(node_id)
+        for key in self.NodesWithReceivingEdges[node_id]:
+            del self.NodesWithOutputEdges[key][node_id]
+            self.EdgeCounter -= 1
+            self.MC += 1
+
+        del self.NodesWithReceivingEdges[node_id]
         self.MC += 1
         return True
 

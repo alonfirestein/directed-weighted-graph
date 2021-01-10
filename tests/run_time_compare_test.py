@@ -45,7 +45,7 @@ def create_nx_graph(graph):
 
 def get_json_graphs():
     my_graphs = list()
-    os.chdir("/Users/alon/PycharmProjects/Ex3/data")
+    os.chdir("/Users/alon/PycharmProjects/Ex3/data/Graphs_on_circle")
     for file in glob.glob("G_*"):
         graph = DiGraph()
         algo = GraphAlgo(graph)
@@ -54,6 +54,7 @@ def get_json_graphs():
         my_graphs.append(graph)
 
     return my_graphs
+
 
 def compare_graph_algorithms():
     shortest_path_results = dict()
@@ -221,7 +222,7 @@ def plot_comparison_results():
 
     plt.tight_layout()
     fig.tight_layout()
-    plt.savefig("Comparison.png")
+    plt.savefig("Comparison2.png")
     plt.show()
 
 
