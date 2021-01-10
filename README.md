@@ -21,8 +21,8 @@ This package contains all the tests that we ran in order to check the functional
 Contains different directed weighted graphs in different sizes, stored in JSON format.
 
 ## Examples of a graph plotted using matplotlib:
-![small_circle_graph](https://user-images.githubusercontent.com/57404551/104134372-cecf7d80-5391-11eb-8d4e-8173f34043ee.png)
-  
+<img src=https://user-images.githubusercontent.com/57404551/104134372-cecf7d80-5391-11eb-8d4e-8173f34043ee.png" width="700" height="500">
+    
 <img src="https://user-images.githubusercontent.com/57404551/104134417-076f5700-5392-11eb-9258-7a58e5ec5ea3.png" width="700" height="500">
 
 
