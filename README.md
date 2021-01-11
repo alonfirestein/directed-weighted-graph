@@ -4,8 +4,8 @@ For this assignment, we implemented a directed weighted graph and several differ
 
 Located below in the readme is an example of a graph plotted using the function we built.
 
-In the [wiki](https://github.com/alonfirestein/directed-weighted-graph/wiki) pages of this repository, you'll find the run time results of different algorithms compared between Python, Java, and the NetworkX library. There will also be there more information regarding the implementation of the algorithms in this graph
-
+In the [wiki](https://github.com/alonfirestein/directed-weighted-graph/wiki) pages of this repository, you'll find the run time results of different algorithms compared between Python, Java, and the NetworkX library. Furtheremore, there will also be there more information regarding the implementation of the algorithms in this graph.
+  
 
 
 ## src folder:
