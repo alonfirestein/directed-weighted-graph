@@ -13,15 +13,15 @@ In the [wiki](https://github.com/alonfirestein/directed-weighted-graph/wiki) pag
 ## src folder:
 
 This package contains the implementation of the graph and all of its corresponding data (nodes, edges, geolocation) and the implementation of all the algorithms used on the graph.
-
-<p>&nbsp;</p>  
-
+  
+  
 ## tests folder:  
   
 This package contains all the tests that we ran in order to check the functionality of all the classes, the graph, and the algorithms. These tests were written and executed using pythons unittest framework. 
-<p>&nbsp;</p>  
-
-### data folder:
+  
+   
+   
+## data folder:
 
 Contains different directed weighted graphs in different sizes, stored in JSON format.
 <p>&nbsp;</p>  
