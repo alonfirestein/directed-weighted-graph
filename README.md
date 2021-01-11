@@ -2,23 +2,30 @@
 
 For this assignment, we implemented a directed weighted graph and several different algorithims. In order to properly visualize the graphs we built a function that plots the graph using the matplotlib library. In addition, we used the matplotlib library to compare run time results of different algorithms between our python graph implementation, our java graph implementation, and a graph built using the NetworkX library. 
 
-Located below in the readme is an example of a graph plotted using the function we built.
+Located below in the readme is an example of a graph plotted using the function we built.  
+   
+<p>&nbsp;</p>  
 
 In the [wiki](https://github.com/alonfirestein/directed-weighted-graph/wiki) pages of this repository, you'll find the run time results of different algorithms compared between Python, Java, and the NetworkX library. Furtheremore, there will also be there more information regarding the implementation of the algorithms in this graph.
+   
+<p>&nbsp;</p>  
   
-
 
 ## src folder:
 
 This package contains the implementation of the graph and all of its corresponding data (nodes, edges, geolocation) and the implementation of all the algorithms used on the graph.
 
-## tests folder:  
+<p>&nbsp;</p>  
 
+## tests folder:  
+  
 This package contains all the tests that we ran in order to check the functionality of all the classes, the graph, and the algorithms. These tests were written and executed using pythons unittest framework. 
+<p>&nbsp;</p>  
 
 ### data folder:
 
 Contains different directed weighted graphs in different sizes, stored in JSON format.
+<p>&nbsp;</p>  
 
 ## Examples of a graph plotted using matplotlib:
 <img src="https://user-images.githubusercontent.com/57404551/104134372-cecf7d80-5391-11eb-8d4e-8173f34043ee.png" width="700" height="550">
