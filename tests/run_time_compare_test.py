@@ -107,121 +107,53 @@ def compare_graph_algorithms():
 
 def plot_comparison_results():
     time_results = compare_graph_algorithms()
-    labels2 = ['SP', 'CCS', 'CC']
-    plot_titles = ['Graph 1: |V|=10, |E|=80', r'Graph 2: |V|=$10^2$, |E|=$8\cdot10^2$', r'Graph 3: |V|=$10^3$, |E|=$8\cdot10^3$',
-                    r'Graph 4: |V|=$10^4$, |E|=$8\cdot10^4$', r'Graph 5: |V|=$2\cdot10^4$, |E|=$16\cdot10^4$',
-                    r'Graph 6: |V|=$3\cdot10^4$, |E|=$24\cdot10^4$']
-    py_graph_1 = [time_results[0][10], time_results[1][10], time_results[2][10]]
-    py_graph_2 = [time_results[0][100], time_results[1][100], time_results[2][100]]
-    py_graph_3 = [time_results[0][1000], time_results[1][1000], time_results[2][1000]]
-    py_graph_4 = [time_results[0][10000], time_results[1][10000], time_results[2][10000]]
-    py_graph_5 = [time_results[0][20000], time_results[1][20000], time_results[2][20000]]
-    py_graph_6 = [time_results[0][30000], time_results[1][30000], time_results[2][30000]]
+    algorithm_labels = ['SP', 'CCS', 'CC']
+    plot_titles = ['Graph 1: |V|=10, |E|=80', r'Graph 2: |V|=$10^2$, |E|=$8\cdot10^2$',
+                   r'Graph 3: |V|=$10^3$, |E|=$8\cdot10^3$',
+                   r'Graph 4: |V|=$10^4$, |E|=$8\cdot10^4$', r'Graph 5: |V|=$2\cdot10^4$, |E|=$16\cdot10^4$',
+                   r'Graph 6: |V|=$3\cdot10^4$, |E|=$24\cdot10^4$']
 
-    nx_graph_1 = [time_results[3][10], time_results[4][10], 0]
-    nx_graph_2 = [time_results[3][100], time_results[4][100], 0]
-    nx_graph_3 = [time_results[3][1000], time_results[4][1000], 0]
-    nx_graph_4 = [time_results[3][10000], time_results[4][10000], 0]
-    nx_graph_5 = [time_results[3][20000], time_results[4][20000], 0]
-    nx_graph_6 = [time_results[3][30000], time_results[4][30000], 0]
+    py_graph = {0: [time_results[0][10], time_results[1][10], time_results[2][10]],
+                1: [time_results[0][100], time_results[1][100], time_results[2][100]],
+                2: [time_results[0][1000], time_results[1][1000], time_results[2][1000]],
+                3: [time_results[0][10000], time_results[1][10000], time_results[2][10000]],
+                4: [time_results[0][20000], time_results[1][20000], time_results[2][20000]],
+                5: [time_results[0][30000], time_results[1][30000], time_results[2][30000]]}
 
-    java_graph_1 = [0.015, 0.0001, 0.001]
-    java_graph_2 = [0.02, 0.002, 0.002]
-    java_graph_3 = [0.49,  0.24, 0.26]
-    java_graph_4 = [0.121, 0.067, 0.077]
-    java_graph_5 = [0.218, 0.211, 0.151]
-    java_graph_6 = [0.354, 0.247, 0.243]
+    nx_graph = {0: [time_results[3][10], time_results[4][10], 0],
+                1: [time_results[3][100], time_results[4][100], 0],
+                2: [time_results[3][1000], time_results[4][1000], 0],
+                3: [time_results[3][10000], time_results[4][10000], 0],
+                4: [time_results[3][20000], time_results[4][20000], 0],
+                5: [time_results[3][30000], time_results[4][30000], 0]}
+
+    java_graph = {0: [0.015, 0.0001, 0.001],
+                  1: [0.02, 0.002, 0.002],
+                  2: [0.49, 0.24, 0.26],
+                  3: [0.121, 0.067, 0.077],
+                  4: [0.218, 0.211, 0.151],
+                  5: [0.354, 0.247, 0.243]}
 
     width = 0.2  # the width of the bars
     fig, ax = plt.subplots(nrows=2, ncols=3, figsize=(11, 8))
-    x = np.arange(len(labels2))
+    x = np.arange(len(algorithm_labels))
 
-    plt.subplot(2, 3, 1)
-    plt.title(plot_titles[0])
-    y1 = [py_graph_1[0], py_graph_1[1], py_graph_1[2]]
-    y2 = [java_graph_1[0], java_graph_1[1], java_graph_1[2]]
-    y3 = [nx_graph_1[0], nx_graph_1[1], nx_graph_1[2]]
-    plt.yscale('log')
-    plt.bar(x-width, y1, width, label='Python', color='red')
-    plt.bar(x, y2, width, label='Java', color='mediumblue')
-    plt.bar(x+width, y3, width, label='NetworkX', color='green')
-    plt.xlabel('Algorithm')
-    plt.ylabel('Time Taken in seconds')
-    plt.xticks(range(len(labels2)), labels2, rotation=45)
-    plt.legend(loc='best', prop={'size': 6})
-
-    plt.subplot(2, 3, 2)
-    plt.title(plot_titles[1])
-    y1 = [py_graph_2[0], py_graph_2[1], py_graph_2[2]]
-    y2 = [java_graph_2[0], java_graph_2[1], java_graph_2[2]]
-    y3 = [nx_graph_2[0], nx_graph_2[1], nx_graph_2[2]]
-    plt.yscale('log')
-    plt.bar(x-width, y1, width, label='Python', color='red')
-    plt.bar(x, y2, width, label='Java', color='mediumblue')
-    plt.bar(x+width, y3, width, label='NetworkX', color='green')
-    plt.xlabel('Algorithm')
-    plt.ylabel('Time Taken in seconds')
-    plt.xticks(range(len(labels2)), labels2, rotation=45)
-    plt.legend(loc='best', prop={'size': 6})
-
-    plt.subplot(2, 3, 3)
-    plt.title(plot_titles[2])
-    y1 = [py_graph_3[0], py_graph_3[1], py_graph_3[2]]
-    y2 = [java_graph_3[0], java_graph_3[1], java_graph_3[2]]
-    y3 = [nx_graph_3[0], nx_graph_3[1], nx_graph_3[2]]
-    plt.yscale('log')
-    plt.bar(x-width, y1, width, label='Python', color='red')
-    plt.bar(x, y2, width, label='Java', color='mediumblue')
-    plt.bar(x+width, y3, width, label='NetworkX', color='green')
-    plt.xlabel('Algorithm')
-    plt.ylabel('Time Taken in seconds')
-    plt.xticks(range(len(labels2)), labels2, rotation=45)
-    plt.legend(loc='best', prop={'size': 6})
-
-    plt.subplot(2, 3, 4)
-    plt.title(plot_titles[3])
-    y1 = [py_graph_4[0], py_graph_4[1], py_graph_4[2]]
-    y2 = [java_graph_4[0], java_graph_4[1], java_graph_4[2]]
-    y3 = [nx_graph_4[0], nx_graph_4[1], nx_graph_4[2]]
-    plt.yscale('log')
-    plt.bar(x-width, y1, width, label='Python', color='red')
-    plt.bar(x, y2, width, label='Java', color='mediumblue')
-    plt.bar(x+width, y3, width, label='NetworkX', color='green')
-    plt.xlabel('Algorithm')
-    plt.ylabel('Time Taken in seconds')
-    plt.xticks(range(len(labels2)), labels2, rotation=45)
-    plt.legend(loc='best', prop={'size': 6})
-
-    plt.subplot(2, 3, 5)
-    plt.title(plot_titles[4])
-    y1 = [py_graph_5[0], py_graph_5[1], py_graph_5[2]]
-    y2 = [java_graph_5[0], java_graph_5[1], java_graph_5[2]]
-    y3 = [nx_graph_5[0], nx_graph_5[1], nx_graph_5[2]]
-    plt.yscale('log')
-    plt.bar(x-width, y1, width, label='Python', color='red')
-    plt.bar(x, y2, width, label='Java', color='mediumblue')
-    plt.bar(x+width, y3, width, label='NetworkX', color='green')
-    plt.xlabel('Algorithm')
-    plt.ylabel('Time Taken in seconds')
-    plt.xticks(range(len(labels2)), labels2, rotation=45)
-    plt.legend(loc='best', prop={'size': 6})
-
-    plt.subplot(2, 3, 6)
-    plt.title(plot_titles[5])
-    y1 = [py_graph_6[0], py_graph_6[1], py_graph_6[2]]
-    y2 = [java_graph_6[0], java_graph_6[1], java_graph_6[2]]
-    y3 = [nx_graph_6[0], nx_graph_6[1], nx_graph_6[2]]
-    plt.yscale('log')
-    plt.bar(x-width, y1, width, label='Python', color='red')
-    plt.bar(x, y2, width, label='Java', color='mediumblue')
-    plt.bar(x+width, y3, width, label='NetworkX', color='green')
-    plt.xlabel('Algorithm')
-    plt.ylabel('Time Taken in seconds')
-    plt.xticks(range(len(labels2)), labels2, rotation=45)
-    plt.legend(loc='best', prop={'size': 6})
+    for i in range(6):
+        plt.subplot(2, 3, i+1)
+        plt.title(plot_titles[i])
+        y1 = [py_graph[i][0], py_graph[i][1], py_graph[i][2]]
+        y2 = [java_graph[i][0], java_graph[i][1], java_graph[i][2]]
+        y3 = [nx_graph[i][0], nx_graph[i][1], nx_graph[i][2]]
+        plt.yscale('log')
+        plt.bar(x-width, y1, width, label='Python', color='red')
+        plt.bar(x, y2, width, label='Java', color='mediumblue')
+        plt.bar(x+width, y3, width, label='NetworkX', color='green')
+        plt.xlabel('Algorithm')
+        plt.ylabel('Time Taken in seconds')
+        plt.xticks(range(len(algorithm_labels)), algorithm_labels)
+        plt.legend(loc='best', prop={'size': 6})
 
     plt.tight_layout()
-    fig.tight_layout()
     plt.savefig("Comparison2.png")
     plt.show()
 

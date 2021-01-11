@@ -92,7 +92,7 @@ class GraphAlgo(GraphAlgoInterface):
         and a list of all the nodes that were visited during the traversal between the two nodes.
         """
         if id1 == id2:
-            return 0, []
+            return 0, [id1]
 
         parentsList = dict()
         distanceList = dict()
