@@ -225,8 +225,6 @@ class GraphAlgo(GraphAlgoInterface):
                 src_node.pos = self.generate_random_pos()
             for j in self.graph.all_out_edges_of_node(src_node.id):
                 dest_node = self.graph.getNode(j)
-                if dest_node.pos is None:
-                    dest_node.pos = self.generate_random_pos()
                 xy1 = (src_node.pos[0], src_node.pos[1])
                 xy2 = (dest_node.pos[0], dest_node.pos[1])
                 ConPatch = ConnectionPatch(xy1, xy2, coordsA, coordsB, arrowstyle="->", shrinkA=5, shrinkB=5, fc="w")
@@ -237,7 +235,6 @@ class GraphAlgo(GraphAlgoInterface):
         plt.ylabel("Y position of node")
         extra_space = 0.05
         if (self.get_node_pos_limits()[0]-self.get_node_pos_limits()[1]) <= 0.5:
-            print(self.get_node_pos_limits()[0]-self.get_node_pos_limits()[1])
             extra_space = 0.0008
         plt.xlim(self.get_node_pos_limits()[1]-extra_space, self.get_node_pos_limits()[0]+extra_space)
         plt.ylim(self.get_node_pos_limits()[3]-extra_space, self.get_node_pos_limits()[2]+extra_space)
