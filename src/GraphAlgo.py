@@ -230,7 +230,6 @@ class GraphAlgo(GraphAlgoInterface):
         plt.ylabel("Y position of node")
         extra_space = 0.05
         if (self.get_node_pos_limits()[0]-self.get_node_pos_limits()[1]) <= 0.5:
-            print(self.get_node_pos_limits()[0]-self.get_node_pos_limits()[1])
             extra_space = 0.0008
         plt.xlim(self.get_node_pos_limits()[1]-extra_space, self.get_node_pos_limits()[0]+extra_space)
         plt.ylim(self.get_node_pos_limits()[3]-extra_space, self.get_node_pos_limits()[2]+extra_space)
