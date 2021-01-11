@@ -53,6 +53,9 @@ class GraphAlgo(GraphAlgoInterface):
             print(e)
             return False
 
+        finally:
+            file.close()
+
         return True
 
     def save_to_json(self, file_name: str) -> bool:
@@ -77,10 +80,14 @@ class GraphAlgo(GraphAlgoInterface):
                         JSONgraph["Edges"].append({"src": node_key, "w": weight, "dest": neighbour_key})
 
                 json.dump(JSONgraph, file, default=lambda x: x.__dict__)
-                return True
 
         except IOError:
             return False
+
+        finally:
+            file.close()
+
+        return True
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         """
@@ -103,23 +110,24 @@ class GraphAlgo(GraphAlgoInterface):
             return INFINITY, []
 
         queue = PriorityQueue()
-        queue.put(graph_nodes[id1].id)
+        queue.put((0, graph_nodes[id1].id))
         for node in graph_nodes.keys():
             distanceList[node] = INFINITY
 
         parentsList[id1] = id1
         distanceList[id1] = 0
         while not queue.empty():
-            currentNode = queue.get()
+            currentNode = queue.get()[1]
             visitedNodes.add(currentNode)
-
+            if currentNode == id2:
+                break
             for key, weight in self.graph.all_out_edges_of_node(currentNode).items():
                 nextNode = graph_nodes[key].id
                 distance = weight + distanceList[currentNode]
                 if distance < distanceList[nextNode]:
                     distanceList[nextNode] = distance
                     parentsList[nextNode] = currentNode
-                    queue.put(nextNode)
+                    queue.put((distanceList[nextNode], nextNode))
 
         # If traversal between id1 and id2 is not possible => therefore not connected:
         if distanceList[id2] == INFINITY:
@@ -143,7 +151,6 @@ class GraphAlgo(GraphAlgoInterface):
         :param id1: The key of the node
         :return: A list of all the strongly connected nodes to id1
         """
-
         if id1 not in self.get_graph().NodesInGraph:
             return []
         if len(self.get_graph().NodesWithOutputEdges[id1]) == 0 or len(
@@ -230,6 +237,7 @@ class GraphAlgo(GraphAlgoInterface):
         plt.ylabel("Y position of node")
         extra_space = 0.05
         if (self.get_node_pos_limits()[0]-self.get_node_pos_limits()[1]) <= 0.5:
+            print(self.get_node_pos_limits()[0]-self.get_node_pos_limits()[1])
             extra_space = 0.0008
         plt.xlim(self.get_node_pos_limits()[1]-extra_space, self.get_node_pos_limits()[0]+extra_space)
         plt.ylim(self.get_node_pos_limits()[3]-extra_space, self.get_node_pos_limits()[2]+extra_space)

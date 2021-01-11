@@ -8,8 +8,13 @@ from src.GraphAlgo import GraphAlgo
 import matplotlib.pyplot as plt
 import math
 import numpy as np
-
 random.seed(7)
+
+"""
+This class was built in order to check and compare the run time results of the graph algorithms in our
+implementation compared to the run time results of the algorithms in the NetworkX library, and the graph
+implementation in Java.
+"""
 
 
 def graph_creator(num_of_nodes: int):
@@ -45,7 +50,7 @@ def create_nx_graph(graph):
 
 def get_json_graphs():
     my_graphs = list()
-    os.chdir("/Users/alon/PycharmProjects/Ex3/data/Graphs_on_circle")
+    os.chdir("/Users/alon/PycharmProjects/Ex3/data/Graphs_no_pos")
     for file in glob.glob("G_*"):
         graph = DiGraph()
         algo = GraphAlgo(graph)
@@ -126,13 +131,13 @@ def plot_comparison_results():
                 3: [time_results[3][10000], time_results[4][10000], 0],
                 4: [time_results[3][20000], time_results[4][20000], 0],
                 5: [time_results[3][30000], time_results[4][30000], 0]}
-
-    java_graph = {0: [0.015, 0.0001, 0.001],
-                  1: [0.02, 0.002, 0.002],
-                  2: [0.49, 0.24, 0.26],
-                  3: [0.121, 0.067, 0.077],
-                  4: [0.218, 0.211, 0.151],
-                  5: [0.354, 0.247, 0.243]}
+    # java dict - graph_num:[[Graph_no_pos results],[Graph_on_circle results],[Graph_random_pos results]]
+    java_graph = {0: [[0.015, 0.0001, 0.001], [0.011, 0.0004285, 0.0002523], [0.017, 0.0002458, 0.0001495]],
+                  1: [[0.02, 0.002, 0.002], [0.013, 0.0025, 0.001], [0.01, 0.001, 0.000935]],
+                  2: [[0.49, 0.24, 0.26], [0.025, 0.017, 0.013], [0.02, 0.02, 0.01]],
+                  3: [[0.121, 0.067, 0.077], [0.14, 0.11, 0.049], [0.12, 0.07, 0.12]],
+                  4: [[0.218, 0.211, 0.151], [0.189, 0.207, 0.148], [0.18, 0.16, 0.20]],
+                  5: [[0.354, 0.247, 0.243], [0.325, 0.322, 0.11], [0.29, 0.34, 0.12]]}
 
     width = 0.2  # the width of the bars
     fig, ax = plt.subplots(nrows=2, ncols=3, figsize=(11, 8))
@@ -142,7 +147,7 @@ def plot_comparison_results():
         plt.subplot(2, 3, i+1)
         plt.title(plot_titles[i])
         y1 = [py_graph[i][0], py_graph[i][1], py_graph[i][2]]
-        y2 = [java_graph[i][0], java_graph[i][1], java_graph[i][2]]
+        y2 = [java_graph[i][0][0], java_graph[i][0][1], java_graph[i][0][2]]
         y3 = [nx_graph[i][0], nx_graph[i][1], nx_graph[i][2]]
         plt.yscale('log')
         plt.bar(x-width, y1, width, label='Python', color='red')
@@ -154,7 +159,7 @@ def plot_comparison_results():
         plt.legend(loc='best', prop={'size': 6})
 
     plt.tight_layout()
-    plt.savefig("Comparison2.png")
+    plt.savefig("Comparison1.png")
     plt.show()
 
 

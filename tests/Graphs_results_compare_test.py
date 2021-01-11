@@ -6,7 +6,10 @@ import networkx as nx
 
 
 class MyTestCase(unittest.TestCase):
-
+    """
+    This unittest class was built in order to check that the results of the graph algorithms in our implementation
+    was the same as the results of the algorithms in the NetworkX library.
+    """
     def test_shortest_path(self):
         algo = GraphAlgo()
         algo.load_from_json("../data/A5")
@@ -38,6 +41,10 @@ class MyTestCase(unittest.TestCase):
         algo.load_from_json("../data/A5")
         graph = algo.get_graph()
         nx_graph = create_nx_graph(graph)
+        graph_result = algo.connected_components()
+        nx_result = list(nx.strongly_connected_components(nx_graph))
+        for node in graph_result[0]:
+            self.assertTrue(node in nx_result[0])
         graph_result = len(algo.connected_components()) == 1
         nx_result = nx.is_strongly_connected(nx_graph)
         self.assertEqual(nx_result, graph_result)
@@ -45,6 +52,10 @@ class MyTestCase(unittest.TestCase):
         algo.load_from_json("../data/A3")
         graph = algo.get_graph()
         nx_graph = create_nx_graph(graph)
+        graph_result = algo.connected_components()
+        nx_result = list(nx.strongly_connected_components(nx_graph))
+        for node in graph_result[0]:
+            self.assertTrue(node in nx_result[0])
         graph_result = len(algo.connected_components()) == 1
         nx_result = nx.is_strongly_connected(nx_graph)
         self.assertEqual(nx_result, graph_result)

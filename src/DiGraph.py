@@ -80,6 +80,8 @@ class DiGraph(GraphInteface):
         :param id1: the id of the node.
         :return: list of id1's neighbours that have an edge directed towards id1.
         """
+        if id1 not in self.NodesWithReceivingEdges:
+            return None
         return self.NodesWithReceivingEdges[id1]
 
     def all_out_edges_of_node(self, id1):
@@ -88,12 +90,16 @@ class DiGraph(GraphInteface):
         :param id1: the id of the node.
         :return: list of id1's neighbours that have an edge directed away from id1.
         """
+        if id1 not in self.NodesWithOutputEdges:
+            return None
         return self.NodesWithOutputEdges[id1]
 
     def get_mc(self):
         return self.MC
 
     def getNode(self, id):
+        if id not in  self.NodesInGraph:
+            return None
         return self.NodesInGraph[id]
 
     def add_edge(self, id1, id2, weight):
@@ -106,7 +112,7 @@ class DiGraph(GraphInteface):
         """
         if (id1 not in self.NodesInGraph.keys()) or (id2 not in self.NodesInGraph.keys()):
             return False
-        if id1 == id2 or weight < 0:
+        if id1 == id2:
             return False
         # If edge exists then we do nothing
         if id2 in self.NodesWithOutputEdges[id1]:
@@ -142,18 +148,19 @@ class DiGraph(GraphInteface):
         if node_id not in self.NodesInGraph:
             return False
 
-        numOfNeighbours = len(self.NodesWithOutputEdges[node_id])
-        self.EdgeCounter -= numOfNeighbours
-        self.MC += numOfNeighbours
+        for key in self.NodesWithOutputEdges[node_id]:
+            del self.NodesWithReceivingEdges[key][node_id]
+            self.EdgeCounter -= 1
+            self.MC += 1
         del self.NodesWithOutputEdges[node_id]
-        del self.NodesInGraph[node_id]
 
         for key in self.NodesWithReceivingEdges[node_id]:
             del self.NodesWithOutputEdges[key][node_id]
             self.EdgeCounter -= 1
             self.MC += 1
-
         del self.NodesWithReceivingEdges[node_id]
+
+        del self.NodesInGraph[node_id]
         self.MC += 1
         return True
 
