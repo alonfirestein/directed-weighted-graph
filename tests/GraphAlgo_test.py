@@ -102,5 +102,12 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(ans1, [[0, 1, 2], [3, 5], [4, 6], [7]])
 
 
+    def test_plot(self):
+        algo = GraphAlgo()
+        algo.load_from_json("../data/A0")
+        graph = algo.get_graph()
+        algo.plot_graph(graph)
+
+
 if __name__ == '__main__':
     unittest.main()

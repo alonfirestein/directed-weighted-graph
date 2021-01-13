@@ -176,6 +176,7 @@ class DiGraph(GraphInteface):
         elif node_id2 not in self.NodesWithOutputEdges[node_id1]:
             return False
         del self.NodesWithOutputEdges[node_id1][node_id2]
+        del self.NodesWithReceivingEdges[node_id2][node_id1]
         self.MC += 1
         self.EdgeCounter -= 1
         return True
