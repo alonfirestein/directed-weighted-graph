@@ -5,7 +5,7 @@ For this assignment, we implemented a directed weighted graph and several differ
 Located below in the readme is an example of a graph plotted using the function we built.  
    
 
-In the [wiki](https://github.com/alonfirestein/directed-weighted-graph/wiki) pages of this repository, you'll find the run time results of different algorithms compared between Python, Java, and the NetworkX library. Furtheremore, there will also be there more information regarding the implementation of the algorithms in this graph.
+In the [wiki](https://github.com/alonfirestein/directed-weighted-graph/wiki) pages of this repository, you'll find the run time results of different algorithms compared between Python, Java, and the NetworkX library. Furthermore, there will also be there more information regarding the implementation of the algorithms in this graph.
    
 <p>&nbsp;</p>  
   
@@ -14,6 +14,15 @@ In the [wiki](https://github.com/alonfirestein/directed-weighted-graph/wiki) pag
 
 This package contains the implementation of the graph and all of its corresponding data (nodes, edges, geolocation) and the implementation of all the algorithms used on the graph.
   
+In the algorithms class, there are different types of algorithms such as:
+- Load
+- Save
+- Shortest Path
+- Connected Component
+- Connected Components
+- Plot Graph
+  
+To find more information on each of these algorithms, please enter the wiki page of the repository, or read the comments in the code.  
   
 ## tests folder:  
   
