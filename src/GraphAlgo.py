@@ -49,12 +49,11 @@ class GraphAlgo(GraphAlgoInterface):
                     dest = edge["dest"]
                     self.graph.add_edge(src, dest, weight)
 
+                file.close()
+
         except Exception as e:
             print(e)
             return False
-
-        finally:
-            file.close()
 
         return True
 
@@ -80,19 +79,20 @@ class GraphAlgo(GraphAlgoInterface):
                         JSONgraph["Edges"].append({"src": node_key, "w": weight, "dest": neighbour_key})
 
                 json.dump(JSONgraph, file, default=lambda x: x.__dict__)
+                file.close()
 
         except IOError:
             return False
-
-        finally:
-            file.close()
 
         return True
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
         """
-        Using dijkstra's algorithm, this function calculates the shortest path between two nodes in a directed weighted
-        graph, a
+        Using Dijkstra's algorithm, this function calculates the shortest path between two nodes in a directed weighted
+        graph. The main idea is to start from the source node and check all of it's neighbours and the total weight of
+        the traversal to him. Each time a node is visited, the total distance of the traversal to him is added to the
+        distance list that contains each node and the distance from the source node to that node. Once the traversal
+        reaches the destination node, the traversal stops.
         :param id1: the source node of the path
         :param id2: the destination node of the path
         :return: a tuple containing the sum weight of the path,
@@ -148,6 +148,9 @@ class GraphAlgo(GraphAlgoInterface):
         This function finds all the strongly connected nodes to id1.
         A node is strongly connected to id1 if it's possible to traverse between him and id1 and also the other way
         around, given that this is a directed weighted graph.
+        The main idea of the algorithm is to start from id1 to the direction of the edges that go out *from* id1 and
+        "paint" every node, the second part is to go in reverse - in the direction of the edges that go *to* id1 and
+        every node that is already painted is in id1's connected component list.
         :param id1: The key of the node
         :return: A list of all the strongly connected nodes to id1
         """
@@ -191,6 +194,8 @@ class GraphAlgo(GraphAlgoInterface):
         """
         This function finds all the possible strongly connected components in the graph.
         A graph is said to be strongly connected if every vertex is reachable from every other vertex.
+        The main idea of the algorithm is to check every node and find his connected component by using the function above
+        note: every node can be only in ONE connected component.
         :return: A list with nested lists that contain all the strongly connected components in the graph.
         """
         for node in self.get_graph().NodesInGraph.values():
@@ -214,6 +219,7 @@ class GraphAlgo(GraphAlgoInterface):
         """
         Using the matplotlib library, this function plots a directed weighted graph in order to properly
         visualize a representation of the graph.
+        To plot the edges and show the arrows we used the ConnectionPatch class within matplotlib.
         :return: None - just opens up the pop up window containing the graph visualization.
         """
         x = self.get_all_node_pos()[0]
