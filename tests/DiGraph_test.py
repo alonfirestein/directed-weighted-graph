@@ -39,7 +39,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(graph.get_mc(), 44)
         graph.remove_node(15)
         graph.remove_node(18)
-        self.assertEqual(graph.get_mc(), 50)
+        self.assertEqual(graph.get_mc(), 46)
 
 
 if __name__ == '__main__':

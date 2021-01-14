@@ -151,13 +151,11 @@ class DiGraph(GraphInteface):
         for key in self.NodesWithOutputEdges[node_id]:
             del self.NodesWithReceivingEdges[key][node_id]
             self.EdgeCounter -= 1
-            self.MC += 1
         del self.NodesWithOutputEdges[node_id]
 
         for key in self.NodesWithReceivingEdges[node_id]:
             del self.NodesWithOutputEdges[key][node_id]
             self.EdgeCounter -= 1
-            self.MC += 1
         del self.NodesWithReceivingEdges[node_id]
 
         del self.NodesInGraph[node_id]
